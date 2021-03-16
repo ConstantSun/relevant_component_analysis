@@ -68,7 +68,7 @@ def distance_metric_A(classes_list, test_point):
     :return:
     """
     total = 0
-    for each_class in len(classes_list): # each_class: shape: n x n_feature
+    for each_class in classes_list: # each_class: shape: n x n_feature
         class_center = np.array(each_class).mean(axis=0)
         s = sum([np.matmul(sample - class_center, (sample - class_center).transpose()) for sample in each_class])/len(each_class)
         total += s
