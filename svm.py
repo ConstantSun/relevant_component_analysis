@@ -61,7 +61,6 @@ print(metrics.confusion_matrix(expected, predicted))
 # predicted = clf.predict(test_points)
 # accuracy = clf.score(test_points, test_labels)
 
-
 # tập hợp các điểm trong class i
 #
 def distance_metric_A(classes_list, test_point):
@@ -71,10 +70,12 @@ def distance_metric_A(classes_list, test_point):
     :return:
     """
     total = 0
-    for each_class in len(classes_list):
-        s = sum([np.matmul(test_point - sample, (test_point - sample).transpose()) for sample in each_class])/len(each_class)
+    for each_class in len(classes_list): # each_class: shape: n x n_feature
+        class_center = np.array(class_center).mean(axis=0)
+        s = sum([np.matmul(sample - class_center, (sample - class_center).transpose()) for sample in each_class])/len(each_class)
         total += s
     return inv(total)
+
 
 
 def get_distance(test_point, classes_list, samples, k=5):
