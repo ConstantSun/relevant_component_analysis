@@ -6,6 +6,7 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.linear_model import LogisticRegression
 from numpy.linalg import inv
 
+
 def svc(training_points, training_labels):
     clf = SVC()
     clf.fit(training_points, training_labels)
@@ -19,50 +20,47 @@ def nn(training_points, training_labels):
     return clf
 
 
-def logistic_regression():
-    clf = LogisticRegression(random_state=0).fit(X, y)
+def logistic_regression(training_points, training_labels):
+    """
+    create the logisticRegression model for classification
+    return:
+        clf: logisticRegression in sklearn
+    """
+    clf = LogisticRegression(random_state=0).fit(training_points, training_labels)
     return clf
 
 
-letters = pd.read_csv('letter-recognition.txt')
+def train(letters):
+    training_points = np.array(letters[:15000].drop(['letter'], 1))
+    training_labels = np.array(letters[:15000]['letter'])
+
+    test_points = np.array(letters[15000:].drop(['letter'], 1))
+    test_labels = np.array(letters[15000:]['letter'])
+
+    clf = nn(training_points, training_labels)
+
+    expected = test_labels
+    predicted = clf.predict(test_points)
+    accuracy = clf.score(test_points, test_labels)
+
+    print(float(accuracy))
+
+    # summarize the fit of the model
+    print(metrics.classification_report(expected, predicted))
+    print(metrics.confusion_matrix(expected, predicted))
+
+
+if __name__ == '__main__':
+    letters = pd.read_csv('letter-recognition.txt')
+    train(letters)
 
 #  (SVM : oke
 #  , NN,
 #  CART,
 #  LR) on
 
-training_points = np.array(letters[:15000].drop(['letter'], 1))
-training_labels = np.array(letters[:15000]['letter'])
-
-print(training_labels[:3])
-
-test_points = np.array(letters[15000:].drop(['letter'], 1))
-test_labels = np.array(letters[15000:]['letter'])
-
-clf = nn(training_points, training_labels)
-
-expected = test_labels
-predicted = clf.predict(test_points)
-
-print("testing ...")
-print(expected[:5])
-
-
-accuracy = clf.score(test_points, test_labels)
-
-print(float(accuracy))
-
-# summarize the fit of the model
-print(metrics.classification_report(expected, predicted))
-print(metrics.confusion_matrix(expected, predicted))
-
-#----------------------------------------------------------------------
-
-# predicted = clf.predict(test_points)
-# accuracy = clf.score(test_points, test_labels)
 
 # tập hợp các điểm trong class i
-#
 def distance_metric_A(classes_list, test_point):
     """
     :param classes_list: np.array, a list of lists of points which are in the same class.
@@ -75,7 +73,6 @@ def distance_metric_A(classes_list, test_point):
         s = sum([np.matmul(sample - class_center, (sample - class_center).transpose()) for sample in each_class])/len(each_class)
         total += s
     return inv(total)
-
 
 
 def get_distance(test_point, classes_list, samples, k=5):
