@@ -1,0 +1,16 @@
+Train: (12000, 16), Val: (4000, 16), Test: (4000, 16)
+Fitting model ...
+(4000, 26)
+(4000, 26)
+(4000, 26)
+(4000, 26)
+Blending Accuracy: 92.025
+lr accuracy: 75.150
+mlp accuracy: 74.225
+cart accuracy: 85.425
+svm accuracy: 91.325
+lr with bias correction accuracy: 89.525
+mlp with bias correction accuracy: 88.225
+cart with bias correction accuracy: 85.425
+svm with bias correction accuracy: 92.550
+essemble model with bias correction: 92.375
